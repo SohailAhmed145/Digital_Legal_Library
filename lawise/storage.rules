@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Users can upload and access their own profile images
+    match /users/profile_images/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can upload and access their own case documents
+    match /cases/documents/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can upload and access their own chat attachments
+    match /chat/attachments/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Users can upload and access their own documents
+    match /documents/{userId}_{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // General documents folder - authenticated users can read/write their own files
+    match /documents/{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Public law documents - anyone can read, authenticated users can write
+    match /law_documents/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}

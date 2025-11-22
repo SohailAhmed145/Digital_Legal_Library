@@ -1,0 +1,66 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users collection - users can read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Cases collection - users can read/write their own cases
+    match /cases/{caseId} {
+      // Read existing case documents
+      allow read: if request.auth != null && (
+        request.auth.uid == resource.data.ownerId ||
+        request.auth.uid == resource.data.userId ||
+        request.auth.uid == resource.data.createdBy
+      );
+
+      // Create/update case documents (use request.resource for incoming data)
+      allow write: if request.auth != null && (
+        request.auth.uid == request.resource.data.ownerId ||
+        request.auth.uid == request.resource.data.userId ||
+        request.auth.uid == request.resource.data.createdBy
+      );
+    }
+    
+    // Documents collection - users can read/write their own documents
+    match /documents/{documentId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Chat conversations - users can access conversations they're part of
+    match /chat_conversations/{conversationId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid in resource.data.participants;
+    }
+    
+    // Chat messages - users can read/write messages in conversations they're part of
+    match /chat_messages/{messageId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Notifications - users can read/write their own notifications
+    match /notifications/{notificationId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Law documents - public read access, authenticated write
+    match /law_documents/{documentId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    
+    // Security logs - only authenticated users can write
+    match /security_logs/{logId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Login attempts - only authenticated users can write
+    match /login_attempts/{attemptId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

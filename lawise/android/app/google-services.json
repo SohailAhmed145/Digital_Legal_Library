@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "393358394480",
+    "project_id": "lawise-5a5a7",
+    "storage_bucket": "lawise-5a5a7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393358394480:android:dc19afd7de0ee8d13120b5",
+        "android_client_info": {
+          "package_name": "com.example.lawise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4Q3cCaJzgLbctmZg9gjg8T3uRshu6V_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393358394480:android:b005ffabb341403e3120b5",
+        "android_client_info": {
+          "package_name": "org.app.lawise"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4Q3cCaJzgLbctmZg9gjg8T3uRshu6V_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
